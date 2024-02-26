@@ -6,25 +6,33 @@ CREATE TABLE employees (
     last_name VARCHAR(20) NOT NULL,
     gender VARCHAR(10),
     salary BIGINT CHECK (salary > 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deptid BIGINT
 );
 
 CREATE TABLE departments (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(200) NOT NULL UNIQUE,
-    start_date DATE
+    start_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE projects (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     area VARCHAR(100),
     name VARCHAR(100) NOT NULL,
-    managed_department BIGINT
+    managed_department BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE assignments (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     number_of_hour INT,
     employee_id BIGINT,
-    project_id BIGINT
+    project_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
