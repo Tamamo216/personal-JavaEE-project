@@ -4,10 +4,11 @@ import myproject.base.dao.BaseDAO;
 import myproject.empoyee.entity.Employee;
 
 import javax.ejb.Stateless;
-import java.util.Comparator;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
-
-import static java.util.Comparator.comparing;
 
 @Stateless
 public class EmployeeDAO extends BaseDAO<Employee> {
@@ -16,10 +17,23 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         super(Employee.class);
     }
 
-    public List<Employee> getEmployeesOrderByFirstName(boolean isDesc) {
-        List<Employee> employees = findAll();
-        if (!isDesc)
-            return employees.stream().sorted(Comparator.comparing(Employee::getFirstName).reversed()).toList();
-        return employees.stream().sorted(comparing(Employee::getFirstName)).toList();
+    public List<Employee> getEmployeesOrderByFirstNameDesc() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> root = cq.from(Employee.class);
+        cq.select(root);
+        cq.orderBy(cb.desc(root.get("firstName")));
+        TypedQuery<Employee> tq = em.createQuery(cq);
+        return tq.getResultList();
+    }
+
+    public List<Employee> getEmployeesOrderByFirstNameAsc() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> root = cq.from(Employee.class);
+        cq.select(root);
+        cq.orderBy(cb.asc(root.get("firstName")));
+        TypedQuery<Employee> tq = em.createQuery(cq);
+        return tq.getResultList();
     }
 }

@@ -15,8 +15,9 @@ public class EmployeeService {
     private EmployeeDAO employeeDAO;
     @Inject
     private EmployeeMapper mapper;
-    public List<EmployeeDTO> getEmployees(boolean isDesc) {
-        return  mapper.toEmployeesDTO(employeeDAO.getEmployeesOrderByFirstName(isDesc));
-
+    public List<EmployeeDTO> getAllEmployees(boolean isDesc) {
+        if (!isDesc)
+            return mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc());
+        return  mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
     }
 }

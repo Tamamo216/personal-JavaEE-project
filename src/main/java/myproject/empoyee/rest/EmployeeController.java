@@ -3,6 +3,7 @@ package myproject.empoyee.rest;
 import myproject.empoyee.service.EmployeeService;
 
 import javax.inject.Inject;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,7 +17,7 @@ public class EmployeeController {
     @Inject
     private EmployeeService employeeService;
     @GET
-    public Response getEmployees(@QueryParam("isDesc") boolean isDesc) {
-        return Response.ok().entity(employeeService.getEmployees(isDesc)).build();
+    public Response getEmployees(@QueryParam("isDesc")  @DefaultValue("true") boolean isDesc) {
+        return Response.ok().entity(employeeService.getAllEmployees(isDesc)).build();
     }
 }

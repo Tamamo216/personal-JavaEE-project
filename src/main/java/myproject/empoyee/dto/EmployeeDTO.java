@@ -1,10 +1,9 @@
 package myproject.empoyee.dto;
 
-import myproject.department.dto.DepartmentDTO;
-import myproject.empoyee.entity.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import myproject.department.dto.DepartmentDTO;
 
 import java.time.LocalDate;
 
@@ -14,7 +13,7 @@ public class EmployeeDTO {
     @JsonFormat(locale = "vi-VN")
     private LocalDate dateOfBirth;
     private String fullName;
-    private Gender gender;
+    private String gender;
     private int salary;
     private DepartmentDTO department;
 }
