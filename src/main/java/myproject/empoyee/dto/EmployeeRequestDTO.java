@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -20,8 +21,11 @@ import java.time.LocalDate;
 public class EmployeeRequestDTO {
     @JsonbDateFormat("yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
+    @NotBlank(message = "Middle name cannot be blank")
     private String middleName;
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
     private String gender;
     private Long salary;

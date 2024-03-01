@@ -1,9 +1,11 @@
 package myproject.empoyee.rest;
 
+import myproject.base.exception.NotFoundException;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.service.EmployeeService;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -26,7 +28,7 @@ public class EmployeeController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addEmployees(EmployeeRequestDTO request) {
+    public Response addEmployees(@Valid EmployeeRequestDTO request) throws NotFoundException {
         return Response.ok().entity(employeeService.addEmployee(request)).build();
     }
 }

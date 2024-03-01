@@ -1,5 +1,6 @@
 package myproject.empoyee.service;
 
+import myproject.base.exception.NotFoundException;
 import myproject.department.dao.DepartmentDAO;
 import myproject.department.entity.Department;
 import myproject.empoyee.dao.EmployeeDAO;
@@ -27,9 +28,10 @@ public class EmployeeService {
         return  mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
     }
 
-    public EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequest) {
+    public EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequest) throws NotFoundException {
         Employee newEmployee = mapper.toEmployee(employeeRequest);
-        Department department = departmentDAO.findById(employeeRequest.getDepartmentId()).orElse(null);
+        Department department = departmentDAO.findById(employeeRequest.getDepartmentId()).orElseThrow(
+                () -> new NotFoundException("Department id doesn't exist"));
         newEmployee.setDepartment(department);
         return mapper.toEmployeeDTO(employeeDAO.addEmployee(newEmployee));
     }
