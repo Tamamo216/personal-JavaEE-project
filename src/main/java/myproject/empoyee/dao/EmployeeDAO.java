@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class EmployeeDAO extends BaseDAO<Employee> {
@@ -40,5 +41,10 @@ public class EmployeeDAO extends BaseDAO<Employee> {
     public Employee addEmployee(Employee employee) {
         em.persist(employee);
         return employee;
+    }
+
+    public Optional<Employee> findEmployeeById(Long employeeId) {
+        TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id = :employeeId", Employee.class);
+        return query.setParameter("employeeId", employeeId).getResultStream().findFirst();
     }
 }

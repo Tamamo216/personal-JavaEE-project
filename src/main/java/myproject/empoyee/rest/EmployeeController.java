@@ -11,6 +11,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -21,9 +22,16 @@ import javax.ws.rs.core.Response;
 public class EmployeeController {
     @Inject
     private EmployeeService employeeService;
+
     @GET
     public Response getEmployees(@QueryParam("isDesc") @DefaultValue("true") boolean isDesc) {
         return Response.ok().entity(employeeService.getAllEmployees(isDesc)).build();
+    }
+
+    @GET
+    @Path("/{employeeId}")
+    public Response findEmployeeById(@PathParam("employeeId") Long employeeId) throws NotFoundException {
+        return Response.ok().entity(employeeService.findEmployeeById(employeeId)).build();
     }
 
     @POST

@@ -28,6 +28,12 @@ public class EmployeeService {
         return  mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
     }
 
+    public EmployeeResponseDTO findEmployeeById(Long employeeId) throws NotFoundException {
+        Employee employee =  employeeDAO.findEmployeeById(employeeId).orElseThrow(
+                () -> new NotFoundException("Employee id doesn't exist"));
+        return mapper.toEmployeeDTO(employee);
+    }
+
     public EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequest) throws NotFoundException {
         Employee newEmployee = mapper.toEmployee(employeeRequest);
         Department department = departmentDAO.findById(employeeRequest.getDepartmentId()).orElseThrow(
