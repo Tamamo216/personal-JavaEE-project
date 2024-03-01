@@ -36,4 +36,9 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         TypedQuery<Employee> tq = em.createQuery(cq);
         return tq.getResultList();
     }
+
+    public Employee addEmployee(Employee employee) {
+        em.persist(employee);
+        return employee;
+    }
 }

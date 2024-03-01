@@ -1,7 +1,11 @@
 package myproject.empoyee.service;
 
+import myproject.department.dao.DepartmentDAO;
+import myproject.department.entity.Department;
 import myproject.empoyee.dao.EmployeeDAO;
-import myproject.empoyee.dto.EmployeeDTO;
+import myproject.empoyee.dto.EmployeeRequestDTO;
+import myproject.empoyee.dto.EmployeeResponseDTO;
+import myproject.empoyee.entity.Employee;
 import myproject.empoyee.mapper.EmployeeMapper;
 
 import javax.ejb.Stateless;
@@ -14,10 +18,19 @@ public class EmployeeService {
     @Inject
     private EmployeeDAO employeeDAO;
     @Inject
+    private DepartmentDAO departmentDAO;
+    @Inject
     private EmployeeMapper mapper;
-    public List<EmployeeDTO> getAllEmployees(boolean isDesc) {
+    public List<EmployeeResponseDTO> getAllEmployees(boolean isDesc) {
         if (!isDesc)
             return mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc());
         return  mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
+    }
+
+    public EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequest) {
+        Employee newEmployee = mapper.toEmployee(employeeRequest);
+        Department department = departmentDAO.findById(employeeRequest.getDepartmentId()).orElse(null);
+        newEmployee.setDepartment(department);
+        return mapper.toEmployeeDTO(employeeDAO.addEmployee(newEmployee));
     }
 }
