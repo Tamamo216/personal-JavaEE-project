@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EmployeeResponseDTO {
+    private Long id;
     private LocalDate dateOfBirth;
     private String fullName;
     private String gender;

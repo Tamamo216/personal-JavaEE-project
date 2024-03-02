@@ -40,7 +40,6 @@ public abstract class BaseDAO<T extends BaseEntity> {
     }
 
     public void delete(long id) {
-        T entity = this.findById(id).get();
-        em.remove(em.contains(entity) ? entity : em.merge(entity));
+        findById(id).ifPresent(entity -> em.remove(entity));
     }
 }
