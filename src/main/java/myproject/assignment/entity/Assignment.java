@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "assignments")
 public class Assignment extends BaseEntity {
     @Column
-    private int numberOfHours;
+    private int numberOfHour;
     @ManyToOne
     private Employee employeeId;
     @ManyToOne
