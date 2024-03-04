@@ -22,33 +22,33 @@ public class EmployeeService {
     @Inject
     private DepartmentDAO departmentDAO;
     @Inject
-    private EmployeeMapper mapper;
+    private EmployeeMapper employeeMapper;
     public List<EmployeeResponseDTO> getAllEmployees(boolean isDesc) {
         if (!isDesc)
-            return mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc());
-        return  mapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
+            return employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc());
+        return  employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
     }
 
     public EmployeeResponseDTO findEmployeeById(Long employeeId) throws NotFoundException {
         Employee employee =  employeeDAO.findEmployeeById(employeeId).orElseThrow(
                 () -> new NotFoundException("Employee id doesn't exist"));
-        return mapper.toEmployeeDTO(employee);
+        return employeeMapper.toEmployeeDTO(employee);
     }
 
     public EmployeeResponseDTO addEmployee(EmployeeRequestDTO employeeRequest) throws NotFoundException, ValidationException {
         validateAddEmployeeRequest(employeeRequest);
-        Employee newEmployee = mapper.toEmployee(employeeRequest);
+        Employee newEmployee = employeeMapper.toEmployee(employeeRequest);
         Department department = departmentDAO.findById(employeeRequest.getDepartmentId()).orElseThrow(
                 () -> new NotFoundException("Department id doesn't exist"));
         newEmployee.setDepartment(department);
-        return mapper.toEmployeeDTO(employeeDAO.addEmployee(newEmployee));
+        return employeeMapper.toEmployeeDTO(employeeDAO.addEmployee(newEmployee));
     }
 
     public EmployeeResponseDTO updateEmployee(EmployeeRequestDTO employeeRequest, Long employeeId) throws NotFoundException, ValidationException {
         Employee employee = employeeDAO.findEmployeeById(employeeId).orElseThrow(
                 () -> new NotFoundException("Employee id doesn't exist"));
-        mapper.updatePartialEmployee(employee, employeeRequest);
-        return mapper.toEmployeeDTO(employeeDAO.update(employee));
+        employeeMapper.updatePartialEmployee(employee, employeeRequest);
+        return employeeMapper.toEmployeeDTO(employeeDAO.update(employee));
     }
 
     private void validateAddEmployeeRequest(EmployeeRequestDTO request) throws ValidationException {
@@ -58,5 +58,10 @@ public class EmployeeService {
             throw new ValidationException("Middle name cannot be blank");
         else if (request.getLastName() == null || request.getLastName().isBlank())
             throw new ValidationException("Last name cannot be blank");
+    }
+
+    public List<EmployeeResponseDTO> getEmployeesByDepartment(Long departmentId) {
+        List<Employee> employees = employeeDAO.getEmployeesByDepartment(departmentId);
+        return employeeMapper.toEmployeeDTOs(employees);
     }
 }

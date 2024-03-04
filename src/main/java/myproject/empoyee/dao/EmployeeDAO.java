@@ -47,4 +47,11 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id = :employeeId", Employee.class);
         return query.setParameter("employeeId", employeeId).getResultStream().findFirst();
     }
+
+    public List<Employee> getEmployeesByDepartment(Long departmentId) {
+        String queryString = "SELECT e FROM Employee e LEFT JOIN e.department d WHERE d.id = :departmentId ORDER BY e.firstName";
+        TypedQuery<Employee> query = em.createQuery(
+                queryString, Employee.class);
+        return query.setParameter("departmentId", departmentId).getResultList();
+    }
 }

@@ -11,6 +11,7 @@ import myproject.project.entity.Project;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,7 +26,9 @@ public class Assignment extends BaseEntity {
     @Column
     private int numberOfHour;
     @ManyToOne
-    private Employee employeeId;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
     @ManyToOne
-    private Project projectId;
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
