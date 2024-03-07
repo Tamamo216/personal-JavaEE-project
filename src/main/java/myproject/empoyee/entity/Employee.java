@@ -14,6 +14,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -25,6 +27,15 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "employees")
+@NamedQueries(
+        @NamedQuery(
+                name = "getEmployeesWithProjects",
+                query = "SELECT e, p FROM Employee e " +
+                        "LEFT JOIN Assignment a ON e.id = a.employee " +
+                        "JOIN Project p ON p.id = a.project " +
+                        "ORDER BY e.firstName "
+        )
+)
 public class Employee extends BaseEntity {
     private LocalDate dateOfBirth;
     @Column(nullable = false)

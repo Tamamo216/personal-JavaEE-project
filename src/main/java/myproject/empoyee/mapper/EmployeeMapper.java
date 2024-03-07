@@ -1,5 +1,6 @@
 package myproject.empoyee.mapper;
 
+import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
 import myproject.empoyee.entity.Employee;
@@ -21,6 +22,8 @@ public interface EmployeeMapper {
 
     Employee toEmployee(EmployeeRequestDTO employeeRequestDTO);
     List<EmployeeResponseDTO> toEmployeeDTOs(List<Employee> employees);
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
+    EmployeeProjectsDTO toEmployeeProjectsDTO(Employee employee);
 
     @Named("getFullName")
     default String getFullName(Employee employee) {

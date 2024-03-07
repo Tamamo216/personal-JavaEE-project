@@ -54,4 +54,10 @@ public class EmployeeDAO extends BaseDAO<Employee> {
                 queryString, Employee.class);
         return query.setParameter("departmentId", departmentId).getResultList();
     }
+
+    public List<Object[]> getEmployeesWithProjects(String area) {
+        TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesWithProjects", Object[].class);
+        // query.setParameter("area", area);
+        return query.getResultList();
+    }
 }

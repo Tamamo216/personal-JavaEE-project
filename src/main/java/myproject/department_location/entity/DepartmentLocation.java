@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "department_locations")
 public class DepartmentLocation extends BaseEntity {
     @Column
-    private String location;
+    private Location location;
     @ManyToOne
     @JoinColumn(name = "deptid")
     private Department deptId;

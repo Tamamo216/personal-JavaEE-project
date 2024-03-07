@@ -50,4 +50,12 @@ public class EmployeeController {
             @PathParam("employeeId") Long employeeId) throws NotFoundException, ValidationException {
         return Response.ok().entity(employeeService.updateEmployee(request, employeeId)).build();
     }
+
+    @GET
+    @Path("employees-projects")
+    public Response getEmployeesWithProjects(
+            @QueryParam("area") @DefaultValue("") String area
+    ) {
+        return Response.ok().entity(employeeService.getEmployeesWithProjects(area)).build();
+    }
 }
