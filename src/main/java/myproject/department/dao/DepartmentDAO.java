@@ -22,4 +22,9 @@ public class DepartmentDAO extends BaseDAO<Department> {
             query = em.createQuery("SELECT d FROM Department d ORDER BY d.name DESC", Department.class);
         return query.getResultList();
     }
+
+    public List<Department> getDepartmentByName(String name) {
+        TypedQuery<Department> query = em.createQuery("SELECT d FROM Department d WHERE d.name = :name", Department.class);
+        return query.setParameter("name", name).getResultList();
+    }
 }

@@ -1,11 +1,12 @@
 package myproject.base.dao;
 
-import myproject.base.entity.BaseEntity;
 import lombok.RequiredArgsConstructor;
+import myproject.base.entity.BaseEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -39,7 +40,11 @@ public abstract class BaseDAO<T extends BaseEntity> {
         return Optional.ofNullable(em.find(entityClass, id));
     }
 
-    public void delete(long id) {
-        findById(id).ifPresent(entity -> em.remove(entity));
+    public void remove(long id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.where(cb.equal(root.get("id"),id));
+        em.createQuery(cq).executeUpdate();
     }
 }

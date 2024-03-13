@@ -11,6 +11,7 @@ import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 @Table(name = "departments")
 public class Department extends BaseEntity {
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "Department name cannot be blank")
     private String name;
     @JsonbDateFormat("dd/MM/yyyy")
     private LocalDate startDate;
