@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DepartmentDTO {
+public class DepartmentRequestDTO {
     private String name;
     @JsonFormat(locale = "vi-VN")
     private LocalDate startDate;

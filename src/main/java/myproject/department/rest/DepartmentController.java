@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import myproject.base.exception.ConflictException;
 import myproject.base.exception.NotFoundException;
-import myproject.department.dto.DepartmentDTO;
+import myproject.department.dto.DepartmentRequestDTO;
 import myproject.department.service.DepartmentService;
 import myproject.empoyee.service.EmployeeService;
 import myproject.project.service.ProjectService;
@@ -93,7 +93,7 @@ public class DepartmentController {
             @ApiResponse(message = "Department name is already existed", code = 409),
             @ApiResponse(message = "Unable to create new department due to internal server error", code = 500)
     })
-    public Response createDepartment(DepartmentDTO department) throws ConflictException {
+    public Response createDepartment(DepartmentRequestDTO department) throws ConflictException {
         return Response.ok().entity(departmentService.createDepartment(department)).build();
     }
 
@@ -107,7 +107,7 @@ public class DepartmentController {
             @ApiResponse(message = "Department name is already existed", code = 409),
             @ApiResponse(message = "Unable to update department due to internal server error", code = 500)
     })
-    public Response updateDepartment(DepartmentDTO department, @PathParam("departmentId") Long departmentId) throws NotFoundException, ConflictException {
+    public Response updateDepartment(DepartmentRequestDTO department, @PathParam("departmentId") Long departmentId) throws NotFoundException, ConflictException {
         return Response.ok().entity(departmentService.updateDepartment(department, departmentId)).build();
     }
 

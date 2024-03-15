@@ -3,7 +3,8 @@ package myproject.department.service;
 import myproject.base.exception.ConflictException;
 import myproject.base.exception.NotFoundException;
 import myproject.department.dao.DepartmentDAO;
-import myproject.department.dto.DepartmentDTO;
+import myproject.department.dto.DepartmentRequestDTO;
+import myproject.department.dto.DepartmentResponseDTO;
 import myproject.department.entity.Department;
 import myproject.department.mapper.DepartmentMapper;
 
@@ -18,24 +19,24 @@ public class DepartmentService {
     DepartmentDAO departmentDAO;
     @Inject
     DepartmentMapper departmentMapper;
-    public List<DepartmentDTO> getDepartments(boolean isDesc) {
+    public List<DepartmentResponseDTO> getDepartments(boolean isDesc) {
         List<Department> departments = departmentDAO.getSortedDepartments(isDesc);
         return departments.stream().map(departmentMapper::toDepartmentDTO).toList();
     }
 
-    public DepartmentDTO getDepartmentById(Long departmentId) throws NotFoundException {
+    public DepartmentResponseDTO getDepartmentById(Long departmentId) throws NotFoundException {
         Department department = departmentDAO.findById(departmentId)
                 .orElseThrow(() -> new NotFoundException("Department id doesn't exist"));
         return departmentMapper.toDepartmentDTO(department);
     }
 
-    public DepartmentDTO createDepartment(DepartmentDTO department) throws ConflictException {
+    public DepartmentResponseDTO createDepartment(DepartmentRequestDTO department) throws ConflictException {
         Department newDepartment = departmentMapper.toDepartment(department);
         checkUniqueDepartmentNameBeforeInsert(newDepartment.getName());
         return departmentMapper.toDepartmentDTO(departmentDAO.add(newDepartment));
     }
 
-    public DepartmentDTO updateDepartment(DepartmentDTO departmentDTO, Long departmentId) throws NotFoundException, ConflictException {
+    public DepartmentResponseDTO updateDepartment(DepartmentRequestDTO departmentDTO, Long departmentId) throws NotFoundException, ConflictException {
         Department departmentToUpdate = departmentDAO.findById(departmentId)
                 .orElseThrow(() -> new NotFoundException("Department id doesn't exist"));
         checkUniqueDepartmentNameBeforeUpdate(departmentDTO.getName(), departmentToUpdate.getId());
@@ -43,7 +44,7 @@ public class DepartmentService {
         return departmentMapper.toDepartmentDTO(departmentToUpdate);
     }
 
-    public DepartmentDTO removeDepartment(Long departmentId) throws NotFoundException {
+    public DepartmentResponseDTO removeDepartment(Long departmentId) throws NotFoundException {
         Department departmentToRemove = departmentDAO.findById(departmentId)
                 .orElseThrow(() -> new NotFoundException("Department id doesn't exist"));
         departmentDAO.remove(departmentToRemove.getId());

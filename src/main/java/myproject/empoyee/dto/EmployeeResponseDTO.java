@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import myproject.department.dto.DepartmentDTO;
+import myproject.department.dto.DepartmentResponseDTO;
 
 import java.time.LocalDate;
 
@@ -23,5 +23,5 @@ public class EmployeeResponseDTO {
     private String fullName;
     private String gender;
     private Long salary;
-    private DepartmentDTO department;
+    private DepartmentResponseDTO department;
 }

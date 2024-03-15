@@ -1,6 +1,7 @@
 package myproject.department.mapper;
 
-import myproject.department.dto.DepartmentDTO;
+import myproject.department.dto.DepartmentRequestDTO;
+import myproject.department.dto.DepartmentResponseDTO;
 import myproject.department.entity.Department;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -12,8 +13,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface DepartmentMapper {
-    DepartmentDTO toDepartmentDTO(Department department);
-    Department toDepartment(DepartmentDTO departmentDTO);
+    DepartmentResponseDTO toDepartmentDTO(Department department);
+    Department toDepartment(DepartmentRequestDTO departmentDTO);
 
-    void updateDepartment(@MappingTarget Department department, DepartmentDTO departmentDTO);
+    void updateDepartment(@MappingTarget Department department, DepartmentRequestDTO departmentDTO);
 }

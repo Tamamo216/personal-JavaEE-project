@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import myproject.department.dto.DepartmentDTO;
+import myproject.department.dto.DepartmentResponseDTO;
 import myproject.project.dto.ProjectResponseDTO;
 
 import java.util.List;
@@ -19,6 +19,6 @@ public class EmployeeProjectsDTO {
     private Long id;
     private String fullName;
     private String gender;
-    private DepartmentDTO department;
+    private DepartmentResponseDTO department;
     private List<ProjectResponseDTO> projects;
 }

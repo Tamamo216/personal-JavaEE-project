@@ -100,4 +100,11 @@ public class EmployeeService {
             return employeeProjectsDTO;
         }).toList();
     }
+
+    public EmployeeResponseDTO removeEmployeeById(Long employeeId) throws NotFoundException {
+        Employee employee = employeeDAO.findEmployeeById(employeeId).orElseThrow(
+                () -> new NotFoundException("Employee id doesn't exist"));
+        employeeDAO.remove(employeeId);
+        return employeeMapper.toEmployeeDTO(employee);
+    }
 }
