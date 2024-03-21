@@ -22,7 +22,7 @@
         <postgre-plugin.version>42.7.1</postgre-plugin.version>
         <junit.version>5.9.3</junit.version>
         <mockito.version>5.8.0</mockito.version>
-        <jbcrypt.version>0.4</jbcrypt.version>
+        <bcrypt.version>0.10.2</bcrypt.version>
         <jackson-datatype.version>2.13.4</jackson-datatype.version>
         <jackson-databind.version>2.14.0-rc1</jackson-databind.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
@@ -110,11 +110,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--Bcrypt-->
         <dependency>
-            <groupId>org.mindrot</groupId>
-            <artifactId>jbcrypt</artifactId>
-            <version>${jbcrypt.version}</version>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>${bcrypt.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
