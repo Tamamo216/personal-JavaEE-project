@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import myproject.base.exception.NotFoundException;
+import myproject.base.security.Secured;
 import myproject.project.dto.ProjectRequestDTO;
 import myproject.project.service.ProjectService;
 
@@ -26,12 +27,14 @@ public class ProjectController {
             @ApiResponse(message = "Something wrong with the server", code = 500)
     })
     @GET
+    @Secured
     public Response getProjects(@QueryParam("order_by") @DefaultValue("name") String orderBy) {
         return Response.ok().entity(projectService.getProjects(orderBy)).build();
     }
 
     @GET
     @Path("/{projectId}")
+    @Secured
     @ApiOperation(value = "Get a project by id")
     @ApiResponses({
             @ApiResponse(message = "Return successfully a project by id", code = 200),
@@ -44,6 +47,7 @@ public class ProjectController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Secured
     @ApiOperation(value = "Add a new project")
     @ApiResponses({
             @ApiResponse(message = "Return successfully the new project by id", code = 200),
@@ -57,6 +61,7 @@ public class ProjectController {
     @PATCH
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{projectId}")
+    @Secured
     @ApiOperation(value = "Update a certain project by id")
     @ApiResponses({
             @ApiResponse(message = "Return successfully the update project", code = 200),
@@ -71,6 +76,7 @@ public class ProjectController {
 
     @DELETE
     @Path("/{projectId}")
+    @Secured
     @ApiOperation(value = "Remove a certain project by id")
     @ApiResponses({
             @ApiResponse(message = "Return successfully the removed project", code = 200),
