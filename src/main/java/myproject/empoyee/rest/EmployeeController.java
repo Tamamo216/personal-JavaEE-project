@@ -86,7 +86,7 @@ public class EmployeeController {
     }
 
     @DELETE
-    @Path("/{employeeId")
+    @Path("/{employeeId}")
     @ApiOperation(value = "Remove an employee by id")
     @ApiResponses({
             @ApiResponse(message = "Return the successfully removed employee", code = 200),
