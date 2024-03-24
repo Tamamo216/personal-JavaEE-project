@@ -4,6 +4,7 @@ import myproject.base.dao.BaseDAO;
 import myproject.empoyee.entity.Employee;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -55,9 +56,19 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         return query.setParameter("departmentId", departmentId).getResultList();
     }
 
-    public List<Object[]> getEmployeesWithProjects(String area) {
+    public List<Object[]> getEmployeesWithProjects(int limit) {
+//        EntityGraph employeeEntityGraph = em.getEntityGraph("entityGraphForEmployeesWithProjects");
         TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesWithProjects", Object[].class);
-        // query.setParameter("area", area);
-        return query.getResultList();
+        return query.setMaxResults(limit).getResultList();
+    }
+
+    public List<Object[]> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, int limit) {
+        EntityGraph<Employee> employeeEntityGraph = em.createEntityGraph(Employee.class);
+        TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesOrderByTotalHours", Object[].class);
+        if (limit != -1)
+            query.setMaxResults(limit);
+        return query.setParameter("departmentId", departmentId)
+                .setHint("javax.persistence.fetchgraph", employeeEntityGraph)
+                .getResultList();
     }
 }

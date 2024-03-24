@@ -7,22 +7,17 @@ import myproject.empoyee.dao.EmployeeDAO;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
+import myproject.empoyee.dto.TopEmployeesByTotalHoursDTO;
 import myproject.empoyee.entity.Employee;
 import myproject.empoyee.mapper.EmployeeMapper;
-import myproject.project.dto.ProjectResponseDTO;
+import myproject.project.dao.ProjectDAO;
 import myproject.project.entity.Project;
 import myproject.project.mapper.ProjectMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Stateless
 public class EmployeeService {
@@ -31,6 +26,8 @@ public class EmployeeService {
     private EmployeeDAO employeeDAO;
     @Inject
     private DepartmentDAO departmentDAO;
+    @Inject
+    private ProjectDAO projectDAO;
     @Inject
     private EmployeeMapper employeeMapper;
     @Inject
@@ -77,27 +74,28 @@ public class EmployeeService {
         return employeeMapper.toEmployeeDTOs(employees);
     }
 
-    public List<EmployeeProjectsDTO> getEmployeesWithProjects(String area) {
-        Map<Long, List<ProjectResponseDTO>> projectsByEmployeeId = new HashMap<>();
-        Set<Employee> employees = new LinkedHashSet<>();
+    public EmployeeProjectsDTO getEmployeeWithProjects(Long employeeId, Integer limit) throws NotFoundException {
+        if (limit == null) limit = -1;
+        Employee employee = employeeDAO.findEmployeeById(employeeId).
+                orElseThrow(() -> new NotFoundException("Employee id cannot be found"));
+        List<Project> projects = projectDAO.getProjectsByEmployee(employeeId, limit);
+        EmployeeProjectsDTO employeeProjectsDTO = employeeMapper.toEmployeeProjectsDTO(employee);
+        employeeProjectsDTO.setProjects(projectMapper.toProjectDTOs(projects));
+        return employeeProjectsDTO;
+    }
 
-        employeeDAO.getEmployeesWithProjects(area).forEach(emplAndProj -> {
-            Employee employee = (Employee) emplAndProj[0];
-            Project project = (Project) emplAndProj[1];
-            if (projectsByEmployeeId.containsKey(employee.getId())) {
-                projectsByEmployeeId.get(employee.getId()).add(projectMapper.toProjectDTO(project));
-            }
-            else {
-                projectsByEmployeeId.put(
-                        employee.getId(), new ArrayList<>(Arrays.asList(projectMapper.toProjectDTO(project))));
-            }
-            employees.add(employee);
-        });
+    public List<TopEmployeesByTotalHoursDTO> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, Integer limit) throws NotFoundException {
+        if (limit == null) limit = -1;
+        if (departmentDAO.findById(departmentId).isEmpty())
+            throw new NotFoundException("Department id cannot be found");
+        List<Object[]> employees = employeeDAO.getTopEmployeesByTotalWorkingHoursOfDepartment(departmentId, limit);
 
-        return employees.stream().map(employee -> {
-            EmployeeProjectsDTO employeeProjectsDTO = employeeMapper.toEmployeeProjectsDTO(employee);
-            employeeProjectsDTO.setProjects(projectsByEmployeeId.get(employee.getId()));
-            return employeeProjectsDTO;
+        return employees.stream().map(objectArr -> {
+            Employee employee = (Employee) objectArr[0];
+            Long totalWorkingHours = (Long) objectArr[1];
+            TopEmployeesByTotalHoursDTO dto = employeeMapper.toTopEmployeesByTotalHoursDTO(employee);
+            dto.setTotalWorkingHours(totalWorkingHours.intValue());
+            return dto;
         }).toList();
     }
 

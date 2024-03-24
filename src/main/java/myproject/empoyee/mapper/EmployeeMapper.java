@@ -3,6 +3,7 @@ package myproject.empoyee.mapper;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
+import myproject.empoyee.dto.TopEmployeesByTotalHoursDTO;
 import myproject.empoyee.entity.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,6 +25,9 @@ public interface EmployeeMapper {
     List<EmployeeResponseDTO> toEmployeeDTOs(List<Employee> employees);
     @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
     EmployeeProjectsDTO toEmployeeProjectsDTO(Employee employee);
+
+    @Mapping(target = "fullName", source = ".", qualifiedByName = "getFullName")
+    TopEmployeesByTotalHoursDTO toTopEmployeesByTotalHoursDTO(Employee employee);
 
     @Named("getFullName")
     default String getFullName(Employee employee) {

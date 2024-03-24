@@ -41,4 +41,12 @@ public class ProjectDAO extends BaseDAO<Project> {
         TypedQuery<Project> query = em.createQuery(cq);
         return query.getResultList();
     }
+
+    public List<Project> getProjectsByEmployee(Long employeeId, int limit) {
+        TypedQuery<Project> query = em.createNamedQuery("getProjectsByEmployeeId", Project.class);
+        query.setParameter("employeeId", employeeId);
+        if (limit != -1)
+            query.setMaxResults(limit);
+        return query.getResultList();
+    }
 }

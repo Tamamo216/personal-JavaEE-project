@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 @Path("employees")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(tags = "Employees")
-public class EmployeeController {
+public class EmployeeResource {
     @Inject
     private EmployeeService employeeService;
 
@@ -73,16 +73,18 @@ public class EmployeeController {
     }
 
     @GET
-    @Path("employees-projects")
-    @ApiOperation(value = "Get a list of employees along with their working projects")
+    @Path("/{employeeId}/projects")
+    @ApiOperation(value = "Get a list of projects that a certain employee has joined")
     @ApiResponses({
-            @ApiResponse(message = "Return a list of employees with projects", code = 200),
+            @ApiResponse(message = "Return a list of projects", code = 200),
+            @ApiResponse(message = "Employee id doesn't exist", code = 404),
             @ApiResponse(message = "Something wrong in the server", code = 500)
     })
     public Response getEmployeesWithProjects(
-            @QueryParam("area") @DefaultValue("") String area
-    ) {
-        return Response.ok().entity(employeeService.getEmployeesWithProjects(area)).build();
+            @PathParam("employeeId") Long employeeId,
+            @QueryParam("limit") Integer limit
+    ) throws NotFoundException {
+        return Response.ok().entity(employeeService.getEmployeeWithProjects(employeeId, limit)).build();
     }
 
     @DELETE

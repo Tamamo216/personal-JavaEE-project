@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 @Path("projects")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(tags = "Projects")
-public class ProjectController {
+public class ProjectResource {
     @Inject
     ProjectService projectService;
 

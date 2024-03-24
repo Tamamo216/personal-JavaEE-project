@@ -5,20 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import myproject.assignment.entity.Assignment;
 import myproject.base.entity.BaseEntity;
 import myproject.department.entity.Department;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,34 +21,57 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "employees")
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(
-                name = "getEmployeesWithProjects",
-                query = "SELECT e, p FROM Employee e " +
-                        "LEFT JOIN Assignment a ON e.id = a.employee " +
-                        "JOIN Project p ON p.id = a.project " +
-                        "ORDER BY e.firstName "
+                name = "getEmployeesOrderByTotalHours",
+                query = "SELECT e, " +
+                        "SUM(a.numberOfHour)" +
+                        "FROM Employee e " +
+                        "LEFT JOIN e.assignments a " +
+                        "WHERE e.department.id = :departmentId " +
+                        "GROUP BY e.id " +
+                        "ORDER BY SUM(a.numberOfHour) DESC"
         )
-)
+})
+//@NamedEntityGraph(
+//        name = "entityGraphForEmployeesWithProjects",
+//        attributeNodes = {
+//                @NamedAttributeNode(value = "assignments", subgraph = "assignments-subgraph")
+//        },
+//        subgraphs = @NamedSubgraph(
+//                name = "assignments-subgraph",
+//                attributeNodes = {
+//                        @NamedAttributeNode("project")
+//                }
+//        )
+//)
 public class Employee extends BaseEntity {
     private LocalDate dateOfBirth;
+
     @Column(nullable = false)
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
+
     @Column(nullable = false)
     @NotBlank(message = "Middle name cannot be blank")
     private String middleName;
+
     @Column(nullable = false)
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     @Column
     private Long salary;
 
     @ManyToOne
     @JoinColumn(name = "deptid")
     private Department department;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private Set<Assignment> assignments;
 
 
 }
