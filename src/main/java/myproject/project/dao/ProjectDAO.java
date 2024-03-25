@@ -5,6 +5,7 @@ import myproject.department.entity.Department;
 import myproject.project.entity.Project;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,13 +21,14 @@ public class ProjectDAO extends BaseDAO<Project> {
         super(Project.class);
     }
 
-    public List<Project> getProjects(String orderBy) {
+    public List<Project> getProjects(int limit, String orderBy) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Project> cq = cb.createQuery(Project.class);
         Root<Project> root = cq.from(Project.class);
         cq.select(root);
         cq.orderBy(cb.desc(root.get(orderBy)));
         TypedQuery<Project> query = em.createQuery(cq);
+        if (limit != -1) query.setMaxResults(limit);
         return query.getResultList();
     }
 
@@ -43,10 +45,11 @@ public class ProjectDAO extends BaseDAO<Project> {
     }
 
     public List<Project> getProjectsByEmployee(Long employeeId, int limit) {
+        EntityGraph entityGraph = em.getEntityGraph("entityGraphForProjectsByEmployee");
         TypedQuery<Project> query = em.createNamedQuery("getProjectsByEmployeeId", Project.class);
         query.setParameter("employeeId", employeeId);
         if (limit != -1)
             query.setMaxResults(limit);
-        return query.getResultList();
+        return query.setHint("javax.persistence.fetchgraph", entityGraph).getResultList();
     }
 }

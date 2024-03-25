@@ -13,7 +13,7 @@ import myproject.project.dto.ProjectResponseDTO;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AssignmentRequestDTO {
-    private Integer numberOfHours;
+    private Integer numberOfHour;
     private Long employeeId;
     private Long projectId;
 }

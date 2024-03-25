@@ -29,13 +29,14 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         return tq.getResultList();
     }
 
-    public List<Employee> getEmployeesOrderByFirstNameAsc() {
+    public List<Employee> getEmployeesOrderByFirstNameAsc(int limit) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
         cq.select(root);
         cq.orderBy(cb.asc(root.get("firstName")));
         TypedQuery<Employee> tq = em.createQuery(cq);
+        if (limit != -1) tq.setMaxResults(limit);
         return tq.getResultList();
     }
 
@@ -63,12 +64,9 @@ public class EmployeeDAO extends BaseDAO<Employee> {
     }
 
     public List<Object[]> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, int limit) {
-        EntityGraph<Employee> employeeEntityGraph = em.createEntityGraph(Employee.class);
         TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesOrderByTotalHours", Object[].class);
         if (limit != -1)
             query.setMaxResults(limit);
-        return query.setParameter("departmentId", departmentId)
-                .setHint("javax.persistence.fetchgraph", employeeEntityGraph)
-                .getResultList();
+        return query.setParameter("departmentId", departmentId).getResultList();
     }
 }

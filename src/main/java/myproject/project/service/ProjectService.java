@@ -19,8 +19,9 @@ public class ProjectService {
     @Inject
     ProjectMapper projectMapper;
 
-    public List<ProjectResponseDTO> getProjects(String orderBy) {
-        List<Project> projects = projectDAO.getProjects(orderBy);
+    public List<ProjectResponseDTO> getProjects(Integer limit, String orderBy) {
+        if (limit == null) limit = -1;
+        List<Project> projects = projectDAO.getProjects(limit, orderBy);
         return projectMapper.toProjectDTOs(projects);
     }
 

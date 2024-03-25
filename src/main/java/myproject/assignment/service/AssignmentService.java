@@ -11,9 +11,11 @@ import myproject.empoyee.entity.Employee;
 import myproject.project.dao.ProjectDAO;
 import myproject.project.entity.Project;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
 
+@Stateless
 public class AssignmentService {
     @Inject
     AssignmentDAO assignmentDAO;

@@ -28,8 +28,10 @@ public class ProjectResource {
     })
     @GET
     @Secured
-    public Response getProjects(@QueryParam("order_by") @DefaultValue("name") String orderBy) {
-        return Response.ok().entity(projectService.getProjects(orderBy)).build();
+    public Response getProjects(
+            @QueryParam("limit") Integer limit,
+            @QueryParam("order_by") @DefaultValue("name") String orderBy) {
+        return Response.ok().entity(projectService.getProjects(limit, orderBy)).build();
     }
 
     @GET

@@ -9,14 +9,7 @@ import myproject.assignment.entity.Assignment;
 import myproject.base.entity.BaseEntity;
 import myproject.department.entity.Department;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
@@ -31,10 +24,22 @@ import java.util.Set;
 @NamedQuery(
         name = "getProjectsByEmployeeId",
         query = "SELECT p FROM Project p " +
-                "LEFT JOIN FETCH p.assignments a " +
+                "LEFT JOIN p.assignments a " +
                 "JOIN a.employee e " +
                 "WHERE e.id = :employeeId " +
                 "ORDER BY p.name"
+)
+@NamedEntityGraph(
+        name = "entityGraphForProjectsByEmployee",
+        attributeNodes = {
+                @NamedAttributeNode(value = "assignments", subgraph = "assignments-subgraph")
+        },
+        subgraphs = @NamedSubgraph(
+                name = "assignments-subgraph",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "employee")
+                }
+        )
 )
 public class Project extends BaseEntity {
     @Column(nullable = false)

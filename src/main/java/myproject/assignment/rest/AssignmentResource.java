@@ -8,6 +8,7 @@ import myproject.assignment.dto.AssignmentRequestDTO;
 import myproject.assignment.entity.Assignment;
 import myproject.assignment.service.AssignmentService;
 import myproject.base.exception.NotFoundException;
+import myproject.base.security.Secured;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,6 +22,7 @@ public class AssignmentResource {
     @Inject
     AssignmentService assignmentService;
     @GET
+    @Secured
     @ApiOperation(value = "Get a list of assignments")
     @ApiResponses({
             @ApiResponse(message = "Return successfully a list of assignment", code = 200),
@@ -31,6 +33,7 @@ public class AssignmentResource {
     }
 
     @GET
+    @Secured
     @Path("/{assignmentId}")
     @ApiOperation(value = "Get assignment by id")
     @ApiResponses({
@@ -44,6 +47,8 @@ public class AssignmentResource {
     }
 
     @POST
+    @Secured
+    @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Add a new assignment")
     @ApiResponses({
             @ApiResponse(message = "Return successfully the new created assignment", code = 200),

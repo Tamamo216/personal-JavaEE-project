@@ -32,10 +32,9 @@ public class EmployeeService {
     private EmployeeMapper employeeMapper;
     @Inject
     private ProjectMapper projectMapper;
-    public List<EmployeeResponseDTO> getAllEmployees(boolean isDesc) {
-        if (!isDesc)
-            return employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc());
-        return  employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameDesc());
+    public List<EmployeeResponseDTO> getAllEmployees(Integer limit) {
+        if (limit == null) limit = -1;
+        return employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc(limit));
     }
 
     public EmployeeResponseDTO findEmployeeById(Long employeeId) throws NotFoundException {

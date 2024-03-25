@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import myproject.base.exception.NotFoundException;
+import myproject.base.security.Secured;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.service.EmployeeService;
 
@@ -23,16 +24,18 @@ public class EmployeeResource {
     private EmployeeService employeeService;
 
     @GET
+    @Secured
     @ApiOperation(value = "Get a list of employees")
     @ApiResponses({
             @ApiResponse(message = "Return successfully", code = 200),
             @ApiResponse(message = "Something wrong in the server", code = 500)
     })
-    public Response getEmployees(@QueryParam("isDesc") @DefaultValue("true") boolean isDesc) {
-        return Response.ok().entity(employeeService.getAllEmployees(isDesc)).build();
+    public Response getEmployees(@QueryParam("limit") Integer limit) {
+        return Response.ok().entity(employeeService.getAllEmployees(limit)).build();
     }
 
     @GET
+    @Secured
     @Path("/{employeeId}")
     @ApiOperation(value = "Get employee by id")
     @ApiResponses({
@@ -45,6 +48,7 @@ public class EmployeeResource {
     }
 
     @POST
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Add a new employee")
     @ApiResponses({
@@ -58,6 +62,7 @@ public class EmployeeResource {
     }
 
     @PUT
+    @Secured
     @Path("/{employeeId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Update an employee")
@@ -73,6 +78,7 @@ public class EmployeeResource {
     }
 
     @GET
+    @Secured
     @Path("/{employeeId}/projects")
     @ApiOperation(value = "Get a list of projects that a certain employee has joined")
     @ApiResponses({
@@ -88,6 +94,7 @@ public class EmployeeResource {
     }
 
     @DELETE
+    @Secured
     @Path("/{employeeId}")
     @ApiOperation(value = "Remove an employee by id")
     @ApiResponses({
