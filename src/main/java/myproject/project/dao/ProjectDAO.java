@@ -45,11 +45,14 @@ public class ProjectDAO extends BaseDAO<Project> {
     }
 
     public List<Project> getProjectsByEmployee(Long employeeId, int limit) {
-        EntityGraph entityGraph = em.getEntityGraph("entityGraphForProjectsByEmployee");
+        EntityGraph<?> projectEntityGraph = em.getEntityGraph("entityGraphForProjectsByEmployee");
+//        EntityGraph<Project> projectEntityGraph = em.createEntityGraph(Project.class);
+//        projectEntityGraph.addAttributeNodes("managedDepartment");
         TypedQuery<Project> query = em.createNamedQuery("getProjectsByEmployeeId", Project.class);
+
         query.setParameter("employeeId", employeeId);
         if (limit != -1)
             query.setMaxResults(limit);
-        return query.setHint("javax.persistence.fetchgraph", entityGraph).getResultList();
+        return query.setHint("javax.persistence.fetchgraph", projectEntityGraph).getResultList();
     }
 }

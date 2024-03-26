@@ -32,14 +32,9 @@ import java.util.Set;
 @NamedEntityGraph(
         name = "entityGraphForProjectsByEmployee",
         attributeNodes = {
-                @NamedAttributeNode(value = "assignments", subgraph = "assignments-subgraph")
-        },
-        subgraphs = @NamedSubgraph(
-                name = "assignments-subgraph",
-                attributeNodes = {
-                        @NamedAttributeNode(value = "employee")
-                }
-        )
+                @NamedAttributeNode(value = "managedDepartment"),
+                @NamedAttributeNode(value = "assignments")
+        }
 )
 public class Project extends BaseEntity {
     @Column(nullable = false)
