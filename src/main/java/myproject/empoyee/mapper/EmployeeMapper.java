@@ -3,7 +3,7 @@ package myproject.empoyee.mapper;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
-import myproject.empoyee.dto.TopEmployeesByTotalHoursDTO;
+import myproject.report.dto.TopEmployeesByTotalHoursDTO;
 import myproject.empoyee.entity.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

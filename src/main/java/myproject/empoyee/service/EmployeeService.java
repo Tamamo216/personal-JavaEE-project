@@ -7,7 +7,7 @@ import myproject.empoyee.dao.EmployeeDAO;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
-import myproject.empoyee.dto.TopEmployeesByTotalHoursDTO;
+import myproject.report.dto.TopEmployeesByTotalHoursDTO;
 import myproject.empoyee.entity.Employee;
 import myproject.empoyee.mapper.EmployeeMapper;
 import myproject.project.dao.ProjectDAO;
@@ -83,20 +83,20 @@ public class EmployeeService {
         return employeeProjectsDTO;
     }
 
-    public List<TopEmployeesByTotalHoursDTO> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, Integer limit) throws NotFoundException {
-        if (limit == null) limit = -1;
-        if (departmentDAO.findById(departmentId).isEmpty())
-            throw new NotFoundException("Department id cannot be found");
-        List<Object[]> employees = employeeDAO.getTopEmployeesByTotalWorkingHoursOfDepartment(departmentId, limit);
-
-        return employees.stream().map(objectArr -> {
-            Employee employee = (Employee) objectArr[0];
-            Long totalWorkingHours = (Long) objectArr[1];
-            TopEmployeesByTotalHoursDTO dto = employeeMapper.toTopEmployeesByTotalHoursDTO(employee);
-            dto.setTotalWorkingHours(totalWorkingHours.intValue());
-            return dto;
-        }).toList();
-    }
+//    public List<TopEmployeesByTotalHoursDTO> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, Integer limit) throws NotFoundException {
+//        if (limit == null) limit = -1;
+//        if (departmentDAO.findById(departmentId).isEmpty())
+//            throw new NotFoundException("Department id cannot be found");
+//        List<Object[]> employees = employeeDAO.getTopEmployeesByTotalWorkingHoursOfDepartment(departmentId, limit);
+//
+//        return employees.stream().map(objectArr -> {
+//            Employee employee = (Employee) objectArr[0];
+//            Long totalWorkingHours = (Long) objectArr[1];
+//            TopEmployeesByTotalHoursDTO dto = employeeMapper.toTopEmployeesByTotalHoursDTO(employee);
+//            dto.setTotalWorkingHours(totalWorkingHours.intValue());
+//            return dto;
+//        }).toList();
+//    }
 
     public EmployeeResponseDTO removeEmployeeById(Long employeeId) throws NotFoundException {
         Employee employee = employeeDAO.findEmployeeById(employeeId).orElseThrow(

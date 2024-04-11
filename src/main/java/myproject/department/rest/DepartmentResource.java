@@ -84,19 +84,19 @@ public class DepartmentResource {
         return Response.ok().entity(projectService.getProjectsByDepartment(departmentId, orderBy)).build();
     }
 
-    @GET
-    @Path("/{departmentId}/employees/leaderboard")
-    @ApiOperation(value = "Get top employees by total working hours")
-    @ApiResponses({
-            @ApiResponse(message = "Return successfully a list of top employees", code = 200),
-            @ApiResponse(message = "Department id doesn't exist", code = 404),
-            @ApiResponse(message = "Internal server error", code = 500)
-    })
-    public Response getTopEmployeesByTotalWorkingHours(
-            @PathParam("departmentId") Long departmentId,
-            @QueryParam("limit") Integer limit) throws NotFoundException {
-        return Response.ok().entity(employeeService.getTopEmployeesByTotalWorkingHoursOfDepartment(departmentId, limit)).build();
-    }
+//    @GET
+//    @Path("/{departmentId}/employees/leaderboard")
+//    @ApiOperation(value = "Get top employees by total working hours")
+//    @ApiResponses({
+//            @ApiResponse(message = "Return successfully a list of top employees", code = 200),
+//            @ApiResponse(message = "Department id doesn't exist", code = 404),
+//            @ApiResponse(message = "Internal server error", code = 500)
+//    })
+//    public Response getTopEmployeesByTotalWorkingHours(
+//            @PathParam("departmentId") Long departmentId,
+//            @QueryParam("limit") Integer limit) throws NotFoundException {
+//        return Response.ok().entity(employeeService.getTopEmployeesByTotalWorkingHoursOfDepartment(departmentId, limit)).build();
+//    }
     @POST
     @ApiOperation(value = "Create a new department")
     @ApiResponses({

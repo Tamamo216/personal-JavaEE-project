@@ -57,16 +57,13 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         return query.setParameter("departmentId", departmentId).getResultList();
     }
 
-    public List<Object[]> getEmployeesWithProjects(int limit) {
-//        EntityGraph employeeEntityGraph = em.getEntityGraph("entityGraphForEmployeesWithProjects");
-        TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesWithProjects", Object[].class);
-        return query.setMaxResults(limit).getResultList();
-    }
-
     public List<Object[]> getTopEmployeesByTotalWorkingHoursOfDepartment(Long departmentId, int limit) {
+        EntityGraph<Employee> employeeEntityGraph = em.createEntityGraph(Employee.class);
         TypedQuery<Object[]> query = em.createNamedQuery("getEmployeesOrderByTotalHours", Object[].class);
         if (limit != -1)
             query.setMaxResults(limit);
-        return query.setParameter("departmentId", departmentId).getResultList();
+        return query.setParameter("departmentId", departmentId)
+                .setHint("javax.persistence.fetchgraph", employeeEntityGraph)
+                .getResultList();
     }
 }

@@ -1,4 +1,4 @@
-package myproject.empoyee.dto;
+package myproject.report.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

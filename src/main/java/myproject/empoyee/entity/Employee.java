@@ -24,8 +24,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(
                 name = "getEmployeesOrderByTotalHours",
-                query = "SELECT e, " +
-                        "SUM(a.numberOfHour)" +
+                query = "SELECT e.id, e.lastName, e.middleName, e.firstName, e.gender, SUM(a.numberOfHour) " +
                         "FROM Employee e " +
                         "LEFT JOIN e.assignments a " +
                         "WHERE e.department.id = :departmentId " +
@@ -33,18 +32,6 @@ import java.util.Set;
                         "ORDER BY SUM(a.numberOfHour) DESC"
         )
 })
-//@NamedEntityGraph(
-//        name = "entityGraphForEmployeesWithProjects",
-//        attributeNodes = {
-//                @NamedAttributeNode(value = "assignments", subgraph = "assignments-subgraph")
-//        },
-//        subgraphs = @NamedSubgraph(
-//                name = "assignments-subgraph",
-//                attributeNodes = {
-//                        @NamedAttributeNode("project")
-//                }
-//        )
-//)
 public class Employee extends BaseEntity {
     private LocalDate dateOfBirth;
 
