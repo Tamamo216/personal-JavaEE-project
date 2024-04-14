@@ -14,10 +14,11 @@ import java.util.Optional;
 
 @Stateless
 public class EmployeeDAO extends BaseDAO<Employee> {
-
     public EmployeeDAO() {
         super(Employee.class);
     }
+
+    private static final int BATCH_SIZE = 50;
 
     public List<Employee> getEmployeesOrderByFirstNameDesc() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -45,6 +46,17 @@ public class EmployeeDAO extends BaseDAO<Employee> {
         return employee;
     }
 
+    public void batchInsert(List<Employee> employees) {
+        long idx = 0L;
+        for (Employee employee : employees) {
+            em.persist(employee);
+            if (idx % BATCH_SIZE == 0) {
+                em.flush();
+                em.clear();
+            }
+            ++idx;
+        }
+    }
     public Optional<Employee> findEmployeeById(Long employeeId) {
         TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE e.id = :employeeId", Employee.class);
         return query.setParameter("employeeId", employeeId).getResultStream().findFirst();
