@@ -19,9 +19,8 @@ public class FlywayMigration {
             Flyway flyway = Flyway
                     .configure()
                     .configuration(properties)
-                    .cleanDisabled(false)
+                    .cleanDisabled(true)
                     .load();
-            flyway.clean();
             flyway.migrate();
         } catch (IOException e) {
             throw new RuntimeException(e);

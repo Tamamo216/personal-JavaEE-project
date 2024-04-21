@@ -1,11 +1,11 @@
 CREATE TABLE employees (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     date_of_birth DATE,
-    first_name VARCHAR(20) NOT NULL,
-    middle_name VARCHAR(20) NOT NULL,
-    last_name VARCHAR(20) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     gender VARCHAR(10),
-    salary BIGINT CHECK (salary > 0),
+    salary BIGINT CHECK (salary >= 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deptid BIGINT
