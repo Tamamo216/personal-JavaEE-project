@@ -34,6 +34,7 @@
         <maven-resources-plugin-version>3.3.0</maven-resources-plugin-version>
         <replacer-version>1.5.3</replacer-version>
         <common-csv.version>1.10.0</common-csv.version>
+        <elasticsearch-client.version>8.13.2</elasticsearch-client.version>
     </properties>
 
     <dependencies>
@@ -166,10 +167,17 @@
             <version>${swagger-io.version}</version>
         </dependency>
 
+        <!--Apache commons CSV -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${common-csv.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>${elasticsearch-client.version}</version>
         </dependency>
 
 

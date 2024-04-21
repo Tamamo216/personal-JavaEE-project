@@ -1,5 +1,8 @@
 package myproject.empoyee.service;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import myproject.base.config.ElasticsearchConnector;
 import myproject.base.exception.NotFoundException;
 import myproject.department.dao.DepartmentDAO;
 import myproject.department.entity.Department;
@@ -7,7 +10,6 @@ import myproject.empoyee.dao.EmployeeDAO;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
-import myproject.report.dto.TopEmployeesByTotalHoursDTO;
 import myproject.empoyee.entity.Employee;
 import myproject.empoyee.mapper.EmployeeMapper;
 import myproject.project.dao.ProjectDAO;
@@ -17,6 +19,7 @@ import myproject.project.mapper.ProjectMapper;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
+import java.io.IOException;
 import java.util.List;
 
 @Stateless
@@ -32,6 +35,8 @@ public class EmployeeService {
     private EmployeeMapper employeeMapper;
     @Inject
     private ProjectMapper projectMapper;
+    @Inject
+    private ElasticsearchConnector esConnector;
     public List<EmployeeResponseDTO> getAllEmployees(Integer limit) {
         if (limit == null) limit = -1;
         return employeeMapper.toEmployeeDTOs(employeeDAO.getEmployeesOrderByFirstNameAsc(limit));
@@ -103,5 +108,21 @@ public class EmployeeService {
                 () -> new NotFoundException("Employee id doesn't exist"));
         employeeDAO.remove(employeeId);
         return employeeMapper.toEmployeeDTO(employee);
+    }
+
+    public List<EmployeeResponseDTO> searchEmployees(String fullName) throws IOException {
+        ElasticsearchClient client = esConnector.getClient();
+        SearchResponse<Employee> response = client.search(s -> s
+                        .index("employees")
+                        .query(q -> q
+                                .match(m -> m
+                                        .field("full_name")
+                                        .query(fullName)
+                                )
+                        ),
+                Employee.class);
+        return response.hits().hits().stream()
+                .map(h -> employeeMapper.toEmployeeDTO(h.source()))
+                .toList();
     }
 }

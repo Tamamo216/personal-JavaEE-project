@@ -15,6 +15,7 @@ import javax.validation.ValidationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 @Path("employees")
 @Produces(MediaType.APPLICATION_JSON)
@@ -104,5 +105,16 @@ public class EmployeeResource {
     })
     public Response removeEmployeeById(@PathParam("employeeId") Long employeeId) throws NotFoundException {
         return Response.ok().entity(employeeService.removeEmployeeById(employeeId)).build();
+    }
+
+    @GET
+    @Path("/elasticsearch")
+    @ApiOperation(value = "Query using Elasticsearch")
+    @ApiResponses({
+            @ApiResponse(message = "Return the search result successfully", code = 200),
+            @ApiResponse(message = "Something wrong in the server", code = 500)
+    })
+    public Response searchEmployees(@QueryParam("full_name") String fullName) throws IOException {
+        return Response.ok().entity(employeeService.searchEmployees(fullName)).build();
     }
 }
