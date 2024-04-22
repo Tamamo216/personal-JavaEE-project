@@ -38,7 +38,7 @@ public class AuthService {
         if (!res.verified)
             throw new BadRequestException("Email or password is incorrect");
         userInfo.put("email", user.getEmail());
-        Optional.of(user.getDisplayName()).ifPresent(displayName -> userInfo.put("display_name", displayName));
+        Optional.ofNullable(user.getDisplayName()).ifPresent(displayName -> userInfo.put("display_name", displayName));
         userInfo.put("role", user.getRole().toString());
         return userInfo;
     }

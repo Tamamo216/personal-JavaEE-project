@@ -2,11 +2,13 @@ package myproject.empoyee.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import myproject.base.config.ElasticsearchConnector;
 import myproject.base.exception.NotFoundException;
 import myproject.department.dao.DepartmentDAO;
 import myproject.department.entity.Department;
 import myproject.empoyee.dao.EmployeeDAO;
+import myproject.empoyee.dto.EmployeeESResponseDTO;
 import myproject.empoyee.dto.EmployeeProjectsDTO;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.dto.EmployeeResponseDTO;
@@ -110,9 +112,9 @@ public class EmployeeService {
         return employeeMapper.toEmployeeDTO(employee);
     }
 
-    public List<EmployeeResponseDTO> searchEmployees(String fullName) throws IOException {
+    public List<EmployeeESResponseDTO> searchEmployees(String fullName) throws IOException {
         ElasticsearchClient client = esConnector.getClient();
-        SearchResponse<Employee> response = client.search(s -> s
+        SearchResponse<EmployeeESResponseDTO> response = client.search(s -> s
                         .index("employees")
                         .query(q -> q
                                 .match(m -> m
@@ -120,9 +122,10 @@ public class EmployeeService {
                                         .query(fullName)
                                 )
                         ),
-                Employee.class);
+                EmployeeESResponseDTO.class);
+
         return response.hits().hits().stream()
-                .map(h -> employeeMapper.toEmployeeDTO(h.source()))
+                .map(Hit::source)
                 .toList();
     }
 }

@@ -9,6 +9,7 @@ import myproject.base.security.UserCredentials;
 import myproject.base.security.UserSecurityContext;
 
 import javax.annotation.Priority;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -41,6 +42,7 @@ public class AuthFilter implements ContainerRequestFilter {
             Map<String, String> userInfo = jwtProvider.validateToken(token);
             UserCredentials userCredentials = new UserCredentials(userInfo);
             requestContext.setSecurityContext(new UserSecurityContext(userCredentials));
+            requestContext.setProperty("role", userCredentials.getRole().toString());
         } catch (JWTVerificationException e) {
             requestContext.abortWith(
                     Response.status(Response.Status.UNAUTHORIZED)

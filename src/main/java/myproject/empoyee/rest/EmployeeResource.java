@@ -8,7 +8,9 @@ import myproject.base.exception.NotFoundException;
 import myproject.base.security.Secured;
 import myproject.empoyee.dto.EmployeeRequestDTO;
 import myproject.empoyee.service.EmployeeService;
+import myproject.user.entity.Role;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -26,6 +28,7 @@ public class EmployeeResource {
 
     @GET
     @Secured
+    @RolesAllowed({"USER", "ADMIN"})
     @ApiOperation(value = "Get a list of employees")
     @ApiResponses({
             @ApiResponse(message = "Return successfully", code = 200),
@@ -37,6 +40,7 @@ public class EmployeeResource {
 
     @GET
     @Secured
+    @RolesAllowed({"USER", "ADMIN"})
     @Path("/{employeeId}")
     @ApiOperation(value = "Get employee by id")
     @ApiResponses({
@@ -50,6 +54,7 @@ public class EmployeeResource {
 
     @POST
     @Secured
+    @RolesAllowed({"ADMIN"})
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Add a new employee")
     @ApiResponses({
@@ -65,6 +70,7 @@ public class EmployeeResource {
     @PUT
     @Secured
     @Path("/{employeeId}")
+    @RolesAllowed({"ADMIN"})
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Update an employee")
     @ApiResponses({
@@ -96,6 +102,7 @@ public class EmployeeResource {
 
     @DELETE
     @Secured
+    @RolesAllowed({"ADMIN"})
     @Path("/{employeeId}")
     @ApiOperation(value = "Remove an employee by id")
     @ApiResponses({

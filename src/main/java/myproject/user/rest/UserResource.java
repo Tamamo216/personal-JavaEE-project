@@ -1,9 +1,13 @@
 package myproject.user.rest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import myproject.user.dto.UserRequestDTO;
 import myproject.user.service.UserService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -20,6 +24,12 @@ public class UserResource {
     UserService userService;
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Create new user")
+    @ApiResponses({
+            @ApiResponse(message = "Add user successfully", code = 200),
+            @ApiResponse(message = "Bad request", code = 400),
+            @ApiResponse(message = "Internal server error", code = 500)
+    })
     public Response addUser(UserRequestDTO request) {
         return Response.ok().entity(userService.addUser(request)).build();
     }
