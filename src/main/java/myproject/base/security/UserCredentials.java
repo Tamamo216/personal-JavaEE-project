@@ -17,12 +17,10 @@ import java.util.Map;
 @Builder
 public class UserCredentials implements Principal {
     private String email;
-    private String password;
     private Role role;
 
     public UserCredentials(Map<String, String> payload) {
         email = payload.get("email");
-        password = payload.get("password");
         role = switch (payload.get("role").toLowerCase()) {
             case "user" -> Role.USER;
             case "admin" -> Role.ADMIN;

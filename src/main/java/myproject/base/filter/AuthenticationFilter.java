@@ -21,7 +21,7 @@ import java.util.Map;
 @Provider
 @Secured
 @Priority(Priorities.AUTHENTICATION)
-public class AuthFilter implements ContainerRequestFilter {
+public class AuthenticationFilter implements ContainerRequestFilter {
     @Inject
     JWTProvider jwtProvider;
     @Override
