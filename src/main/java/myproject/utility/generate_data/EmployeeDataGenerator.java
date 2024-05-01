@@ -1,9 +1,9 @@
 package myproject.utility.generate_data;
 
-import myproject.utility.csv.CSVUtils;
+import myproject.utility.data_importer.base.DataImporter;
+import myproject.utility.data_importer.employee.csv.EmployeeCSVImporter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class EmployeeDataGenerator {
@@ -23,7 +24,8 @@ public class EmployeeDataGenerator {
     private static final int RECORD_NUM = 1000000;
 
     public static void generateOneMillionsEmployees(InputStream initialDataFile) throws IOException {
-        Iterable<CSVRecord> initialData = CSVUtils.readCSV(initialDataFile);
+        DataImporter dataImporter = new EmployeeCSVImporter();
+        List<Map<String, String>> initialData = dataImporter.loadData(initialDataFile);
         List<String> availableDateOfBirth = new ArrayList<>();
         List<String> availableFirstName = new ArrayList<>();
         List<String> availableMiddleName = new ArrayList<>();
