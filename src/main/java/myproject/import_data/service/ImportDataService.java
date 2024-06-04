@@ -38,6 +38,7 @@ public class ImportDataService {
                 break;
             case EXCEL:
                 importingFactory = importingFactories.select(EmployeeImportingExcelFactory.class).get();
+                break;
             default: break;
         }
         return importingFactory.importData(data);
